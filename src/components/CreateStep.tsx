@@ -35,20 +35,19 @@ const CreateStep: React.FC = () => {
         <Grid item xs={12} component='div'>
           <TextField
             required
-            id="title"
-            name="title"
-            label="Inserisci un titolo"
+            id="player1"
+            name="player1"
+            label="Inserisci il tuo nome"
             fullWidth
-            autoComplete="title"
           />
         </Grid>
         <Grid item xs={12} component='div'>
           <TextField
-            id="message"
-            name="message"
-            label="Inserisci un messaggio"
+            required
+            id="player2"
+            name="player2"
+            label="Inserisci il nome del tuo avversario"
             fullWidth
-            autoComplete="message"
           />
         </Grid>
       </Grid>

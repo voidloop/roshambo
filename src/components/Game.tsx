@@ -1,7 +1,6 @@
 import * as React from "react";
-import {Box, createStyles, Theme} from "@material-ui/core";
+import {Box, createStyles, Theme, WithStyles} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
-import makeStyles from "@material-ui/core/styles/makeStyles";
 import Paper from "@material-ui/core/Paper";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -11,10 +10,9 @@ import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import ShapeStep from "./ShapeStep";
+import withStyles from "@material-ui/core/styles/withStyles";
 
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
+const styles = (theme: Theme) => createStyles({
     paper: {
       margin: 'auto',
       marginTop: theme.spacing(2),
@@ -44,86 +42,111 @@ const useStyles = makeStyles((theme: Theme) =>
     stepper: {
       padding: theme.spacing(3, 0, 5),
     },
-  }),
+  }
 );
 
 
-const steps = ['Crea una sfida', 'Scegli il segno', 'Il tuo avversario'];
+interface State {
+  activeStep: number;
+}
 
 
-const getStepContent = (step: number) => {
-  switch (step) {
-    case 0:
-      return <CreateStep/>;
-    case 1:
-      return <ShapeStep/>;
-    case 2:
-      return <CreateStep/>;
-    default:
-      throw new Error('Unknown step');
+interface Props extends WithStyles<typeof styles> {
+}
+
+
+class Game extends React.Component<Props> {
+
+  readonly steps = ['Crea una sfida', 'Scegli il segno', 'Il tuo avversario'];
+  state: State;
+
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      activeStep: 0,
+    }
   }
-};
 
+  render() {
+    const {classes} = this.props;
+    const activeStep = this.state.activeStep;
 
-const Game: React.FC = () => {
-  const classes = useStyles();
-  const [activeStep, setActiveStep] = React.useState(0);
+    return (
+      <React.Fragment>
+        <Paper className={classes.paper}>
+          <AppBar position="static" className={classes.appBar}>
+            <Toolbar>
+              <Typography variant="h6" color='textPrimary'>
+                Roshambo!
+              </Typography>
+            </Toolbar>
+          </AppBar>
 
-  const handleNext = () => {
-    setActiveStep(activeStep + 1);
-  };
-
-  const handleBack = () => {
-    setActiveStep(activeStep - 1);
-  };
-
-  return (
-
-    <React.Fragment>
-
-      <Paper className={classes.paper}>
-        <AppBar position="static" className={classes.appBar}>
-          <Toolbar>
-            <Typography variant="h6" color='textPrimary'>
-              Roshambo!
-            </Typography>
-          </Toolbar>
-        </AppBar>
-
-        <Box className={classes.box}>
-          <Stepper activeStep={activeStep} className={classes.stepper}>
-            {steps.map((label: any) => (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            ))}
-          </Stepper>
-          <React.Fragment>
-            {getStepContent(activeStep)}
-            <div className={classes.buttons}>
-              {activeStep !== 0 && (
+          <Box className={classes.box}>
+            <Stepper activeStep={activeStep} className={classes.stepper}>
+              {this.steps.map((label: any) => (
+                <Step key={label}>
+                  <StepLabel>{label}</StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+            <React.Fragment>
+              {this.getStepContent()}
+              <div className={classes.buttons}>
+                {this.canGoBack() && this.renderBackButton()}
                 <Button
-                  onClick={handleBack}
+                  variant="contained"
+                  color="primary"
+                  onClick={() => this.handleNext()}
                   className={classes.button}
                 >
-                  Back
+                  {this.isLastStep() ? 'Invia la sfida!' : 'Avanti'}
                 </Button>
-              )}
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleNext}
-                className={classes.button}
-              >
-                {activeStep === steps.length - 1 ? 'Invia la sfida!' : 'Avanti'}
-              </Button>
-            </div>
-          </React.Fragment>
+              </div>
+            </React.Fragment>
 
-        </Box>
-      </Paper>
-    </React.Fragment>
-  );
-};
+          </Box>
+        </Paper>
+      </React.Fragment>
+    );
+  }
 
-export default Game;
+  renderBackButton() {
+    const {classes} = this.props;
+    return <Button onClick={() => this.handleBack()} className={classes.button}>
+      Indietro
+    </Button>
+  }
+
+  getStepContent() {
+    switch (this.state.activeStep) {
+      case 0:
+        return <CreateStep/>;
+      case 1:
+        return <ShapeStep/>;
+      case 2:
+        return <CreateStep/>;
+      default:
+        throw new Error('Unknown step');
+    }
+  }
+
+  handleNext() {
+    this.setState({activeStep: this.state.activeStep + 1});
+  }
+
+  handleBack() {
+    this.setState({activeStep: this.state.activeStep - 1});
+  }
+
+  isLastStep() {
+    return this.state.activeStep === this.steps.length - 1;
+  }
+
+  canGoBack() {
+    return this.state.activeStep !== 0;
+  }
+
+}
+
+export default withStyles(styles)(Game);
