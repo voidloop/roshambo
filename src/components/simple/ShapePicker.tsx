@@ -5,7 +5,7 @@ import {faHandPaper, faHandRock, faHandScissors} from "@fortawesome/free-regular
 import * as React from "react";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {createStyles} from "@material-ui/core";
-import {red} from "@material-ui/core/colors";
+
 import {IconDefinition} from '@fortawesome/fontawesome-common-types';
 
 
@@ -23,14 +23,19 @@ const useStyles = makeStyles(() =>
 
 interface Props {
   onClick: (shape: string) => void;
+  disabled?: boolean;
 }
 
 const ShapePicker: React.FC<Props> = (props: Props) => {
   const classes = useStyles();
 
+  const isEnabled = () => {
+    return !props.disabled;
+  };
+
   const renderButton = (shape: string, icon: IconDefinition) => (
-    <Grid item sm={3} component='div' className={classes.shape}>
-      <Button className={classes.button} onClick={() => props.onClick(shape)}>
+    <Grid item component='div' className={classes.shape}>
+      <Button className={classes.button} onClick={() => {isEnabled() && props.onClick(shape)}}>
         <FontAwesomeIcon icon={icon} size='3x'/>
       </Button>
     </Grid>
