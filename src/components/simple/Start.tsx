@@ -5,6 +5,8 @@ import Button from "@material-ui/core/Button";
 import {ChangeEvent} from "react";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {Box, createStyles, Theme} from "@material-ui/core";
+import AppBar from "@material-ui/core/AppBar/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -20,12 +22,21 @@ const useStyles = makeStyles((theme: Theme) =>
     buttons: {
       display: 'flex',
       justifyContent: 'flex-end',
-      marginTop: theme.spacing(6),
+      width: "100%",
     },
     button: {
-      marginTop: theme.spacing(3),
-      marginLeft: theme.spacing(1),
     },
+
+    appBar: {
+      background: 'transparent',
+      boxShadow: 'none',
+      top: 'auto',
+      bottom: 0,
+      [theme.breakpoints.down('sm')]: {
+        position: 'fixed'
+      },
+    },
+
   }),
 );
 
@@ -42,37 +53,41 @@ const Start: React.FC<Props> = (props: Props) => {
   const handleChange = (event: ChangeEvent) => {
     const target = event.target as HTMLInputElement;
     setPlayerName(target.value);
-    console.log(target.value);
   };
 
   return (
-    <Box className={classes.box}>
-      <Grid container spacing={3} component='div'>
-        <Grid item xs={12} component='div'>
-          <TextField
-            required
-            id="playerName"
-            name="playerName"
-            value={playerName}
-            label="Inserisci il tuo nome"
-            fullWidth
-            onChange={handleChange}
-          />
+    <React.Fragment>
+      <Box className={classes.box}>
+        <Grid container spacing={3} component='div'>
+          <Grid item xs={12} component='div'>
+            <TextField
+              required
+              id="playerName"
+              name="playerName"
+              value={playerName}
+              label="Inserisci il tuo nome"
+              fullWidth
+              onChange={handleChange}
+            />
+          </Grid>
         </Grid>
-      </Grid>
+      </Box>
 
-      <div className={classes.buttons}>
-        <Button
-          href=''
-          variant="contained"
-          color="primary"
-          onClick={() => props.onClick(playerName)}
-          className={classes.button}
-        >
-          Gioca!
-        </Button>
-      </div>
-    </Box>
+      <AppBar position="static" className={classes.appBar}>
+        <Toolbar>
+          <Box className={classes.buttons}>
+            <Box>
+              <Button href='' variant="contained" color="primary"
+                      onClick={() => props.onClick(playerName)}
+                      className={classes.button}
+              >
+                Gioca!
+              </Button>
+            </Box>
+          </Box>
+        </Toolbar>
+      </AppBar>
+    </React.Fragment>
   );
 };
 

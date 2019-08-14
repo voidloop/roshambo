@@ -4,19 +4,21 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faHandPaper, faHandRock, faHandScissors} from "@fortawesome/free-regular-svg-icons";
 import * as React from "react";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import {createStyles} from "@material-ui/core";
+import {Box, createStyles, Theme} from "@material-ui/core";
 
 import {IconDefinition} from '@fortawesome/fontawesome-common-types';
 
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    shape: {
-      textAlign: 'center'
-    },
     button: {
-      width: '90px',
-      height: '90px',
+      width: '70px',
+      height: '70px',
+    },
+    buttons: {
+      display: 'flex',
+      justifyContent: 'center',
+      width: "100%",
     },
   }),
 );
@@ -34,19 +36,19 @@ const ShapePicker: React.FC<Props> = (props: Props) => {
   };
 
   const renderButton = (shape: string, icon: IconDefinition) => (
-    <Grid item component='div' className={classes.shape}>
+    <Box p={1}>
       <Button className={classes.button} onClick={() => {isEnabled() && props.onClick(shape)}}>
         <FontAwesomeIcon icon={icon} size='3x'/>
       </Button>
-    </Grid>
+    </Box>
   );
 
   return (
-    <Grid container spacing={1} component='div' justify='center'>
+    <Box className={classes.buttons}>
       {renderButton('rock', faHandRock)}
       {renderButton('scissors', faHandScissors)}
       {renderButton('paper', faHandPaper)}
-    </Grid>
+    </Box>
   );
 };
 

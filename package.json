@@ -14,6 +14,7 @@
     "@types/node": "12.7.1",
     "@types/react": "16.9.1",
     "@types/react-dom": "16.8.5",
+    "aws-amplify": "^1.1.36",
     "aws-amplify-react": "^2.3.12",
     "eslint": "^6.1.0",
     "react": "^16.9.0",
