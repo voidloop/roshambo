@@ -31,13 +31,9 @@ interface Props {
 const ShapePicker: React.FC<Props> = (props: Props) => {
   const classes = useStyles();
 
-  const isEnabled = () => {
-    return !props.disabled;
-  };
-
   const renderButton = (shape: string, icon: IconDefinition) => (
     <Box p={1}>
-      <Button className={classes.button} onClick={() => {isEnabled() && props.onClick(shape)}}>
+      <Button className={classes.button} disabled={props.disabled} onClick={() => {props.onClick(shape)}}>
         <FontAwesomeIcon icon={icon} size='3x'/>
       </Button>
     </Box>
