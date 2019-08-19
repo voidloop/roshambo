@@ -7,7 +7,8 @@ import Typography from "@material-ui/core/Typography";
 import {Box, createStyles, Theme, WithStyles} from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import withStyles from "@material-ui/core/styles/withStyles";
-import Button from "@material-ui/core/Button";
+import API from "@aws-amplify/api";
+import * as uuid from "uuid";
 
 
 const styles = (theme: Theme) => createStyles({
@@ -32,6 +33,7 @@ interface Props extends WithStyles<typeof styles> {
 
 
 interface State {
+  uuid: string;
   playerName: string;
   scoreP1: number;
   scoreP2: number;
@@ -44,6 +46,7 @@ class Game extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
     this.state = {
+      uuid: '',
       playerName: '',
       scoreP1: 0,
       scoreP2: 0,
@@ -74,46 +77,19 @@ class Game extends React.Component<Props> {
   }
 
   renderBoard() {
-    return <Board playerName={this.state.playerName}
+    return <Board uuid={this.state.uuid}
+                  playerName={this.state.playerName}
                   scoreP1={this.state.scoreP1}
                   scoreP2={this.state.scoreP2}
-                  calculateScores={(shapeP1: string, shapeP2: string) => this.calculateScores(shapeP1, shapeP2)}
+                  updateScore={(scoreP1: number, scoreP2: number) => this.updateScore(scoreP1, scoreP2)}
     />;
   }
 
-  incScoreP1() {
-    this.setState({scoreP1: this.state.scoreP1 + 1});
-  }
-
-  incScoreP2() {
-    this.setState({scoreP2: this.state.scoreP2 + 1});
-  }
-
-  calculateScores(shapeP1: string, shapeP2: string) {
-    if (shapeP1 === 'rock') {
-      if (shapeP2 === 'paper') {
-        this.incScoreP2()
-      }
-      else if (shapeP2 === 'scissors') {
-        this.incScoreP1()
-      }
-    }
-    else if (shapeP1 === 'scissors') {
-      if (shapeP2 === 'paper') {
-        this.incScoreP1()
-      }
-      else if (shapeP2 === 'rock') {
-        this.incScoreP2()
-      }
-    }
-    else if (shapeP1 === 'paper') {
-      if (shapeP2 === 'scissors') {
-        this.incScoreP2()
-      }
-      else if (shapeP2 === 'rock') {
-        this.incScoreP1()
-      }
-    }
+  updateScore(scoreP1: number, scoreP2: number) {
+    this.setState({
+      scoreP1: scoreP1,
+      scoreP2: scoreP2
+    });
   }
 
   renderStart() {
@@ -121,7 +97,19 @@ class Game extends React.Component<Props> {
   }
 
   handleClick(playerName: string) {
-    this.setState({playerName: playerName});
+    const playerUuid: string = uuid.v4();
+
+    API.post('GamesApi', '/games', {
+      body: {
+        uuid: playerUuid,
+        playerName: playerName,
+        scoreP1: this.state.scoreP1,
+        scoreP2: this.state.scoreP1,
+        date: Date.now()
+      }
+    }).then(() => {
+      this.setState({playerName: playerName, uuid: playerUuid});
+    });
   }
 }
 

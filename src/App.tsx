@@ -8,7 +8,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import awsmobile from './aws-exports';
 import Amplify from 'aws-amplify';
 
-//Amplify.Logger.LOG_LEVEL = 'DEBUG';
+Amplify.Logger.LOG_LEVEL = 'DEBUG';
 Amplify.configure(awsmobile);
 
 

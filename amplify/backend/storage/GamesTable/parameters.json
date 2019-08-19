@@ -1,0 +1,5 @@
+{
+    "tableName": "GamesTable",
+    "partitionKeyName": "uuid",
+    "partitionKeyType": "S"
+}

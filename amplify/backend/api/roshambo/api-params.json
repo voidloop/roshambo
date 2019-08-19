@@ -1,0 +1,34 @@
+{
+    "paths": [
+        {
+            "name": "/match",
+            "lambdaFunction": "matchfunction",
+            "privacy": {
+                "open": true
+            }
+        }
+    ],
+    "resourceName": "roshambo",
+    "apiName": "roshambo",
+    "functionArns": [
+        {
+            "lambdaFunction": "matchfunction"
+        }
+    ],
+    "privacy": {
+        "auth": 0,
+        "unauth": 0,
+        "authRoleName": "roshambo-dev-20190812191950-authRole",
+        "unAuthRoleName": "roshambo-dev-20190812191950-unauthRole"
+    },
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "matchfunction",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        }
+    ]
+}

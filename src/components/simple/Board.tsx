@@ -176,10 +176,11 @@ interface State {
 
 
 interface Props extends WithStyles<typeof styles> {
+  uuid: string;
   playerName: string;
   scoreP1: number;
   scoreP2: number;
-  calculateScores: (shapeP1: string, shapeP2: string) => void;
+  updateScore: (scoreP1: number, scoreP2: number) => void;
 }
 
 
@@ -307,16 +308,34 @@ class Board extends React.Component<Props> {
   }
 
   doGet() {
-    API.get('roshambo', '/match', {})
-      .then((data: any) => {
-        this.setState({
-          shapeP1: this.state.pickedShape,
-          shapeP2: data.shape,
-          buttonsDisabled: false,
-          in: false
-        });
-        this.props.calculateScores(this.state.shapeP1, this.state.shapeP2);
+    API.put('GamesApi', '/games', {
+      body: {
+        uuid: this.props.uuid,
+        shapeP1: this.state.pickedShape
+      }
+    }).then((result: any) => {
+      const data = result.data;
+      this.setState({
+        shapeP1: data.shapeP1,
+        shapeP2: data.shapeP2,
+        buttonsDisabled: false,
+        in: false
       });
+      this.props.updateScore(data.scoreP1, data.scoreP2);
+
+    });
+
+
+    // API.get('roshambo', '/match', {})
+    //   .then((data: any) => {
+    //     this.setState({
+    //       shapeP1: this.state.pickedShape,
+    //       shapeP2: data.shape,
+    //       buttonsDisabled: false,
+    //       in: false
+    //     });
+    //     this.props.calculateScores(this.state.shapeP1, this.state.shapeP2);
+    //   });
   }
 
 }
