@@ -7,131 +7,152 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFistRaised} from "@fortawesome/free-solid-svg-icons";
 import Transition from "react-transition-group/Transition";
 import Typography from "@material-ui/core/Typography";
-import {grey} from "@material-ui/core/colors";
+import {indigo} from "@material-ui/core/colors";
 import API from "@aws-amplify/api";
 import AppBar from "@material-ui/core/AppBar/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import {faHandPaper, faHandRock, faHandScissors} from "@fortawesome/free-regular-svg-icons";
 
-
 const duration = 150;
 
 
 const styles = (theme: Theme) => createStyles({
-    box: {
-      margin: theme.spacing(4, 10),
-      paddingBottom: theme.spacing(3),
-      [theme.breakpoints.down('xs')]: {
-        margin: theme.spacing(4, 5),
-      },
+  box: {
+    margin: theme.spacing(4, 10),
+    paddingBottom: theme.spacing(3),
+    [theme.breakpoints.down('xs')]: {
+      margin: theme.spacing(4, 5),
     },
+  },
 
-    grid: {
-      border: '1px solid black'
-    },
-
-    iconLeft: {
-      transform: 'rotate(90deg) rotateY(180deg)',
-    },
-
-    iconRight: {
-      transform: 'rotate(270deg)',
-    },
-
-    animationDivLeft: {
-      transition: `transform ${duration}ms ease-in-out`,
-      transformOrigin: 'left center'
-    },
-
-    animationDivRight: {
-      transition: `transform ${duration}ms ease-in-out`,
-      transformOrigin: 'right center'
-    },
-
-    boxLeft: {
-      height: '200px',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: "center",
-      [theme.breakpoints.down('xs')]: {
-        height: 'auto',
-      }
-    },
-
-    boxRight: {
-      height: '200px',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: "center",
-      [theme.breakpoints.down('xs')]: {
-        height: 'auto',
-      }
-    },
-
-    divider: {
-      marginBottom: theme.spacing(2)
-    },
-
-    vsBox: {
-      display: "flex",
-      justifyContent: "center",
-      height: '100%',
-      width: '100%',
-    },
-
-    vsGrid: {
-      [theme.breakpoints.down('xs')]: {
-        marginTop: theme.spacing(4),
-        marginBottom: theme.spacing(4),
-      },
-    },
-
-    vsNestedBox: {
-      display: "flex",
-      justifyContent: "center",
-      marginBottom: theme.spacing(2),
-      background: `linear-gradient(to left, ${grey[100]} 50%, ${grey[100]} 0)`,
-      clipPath: 'polygon(0 0, 100% 0, 50% 90%)',
-      height: '100%',
-      width: '80px',
-      minWidth: '80px',
-      paddingTop: theme.spacing(1),
-      [theme.breakpoints.down('xs')]: {
-        clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)',
-        width: '100%',
-        alignItems: "center",
-        paddingTop: theme.spacing(0),
-      }
-    },
-
-    appBar: {
-      background: 'transparent',
-      top: 'auto',
-      bottom: 0,
-      [theme.breakpoints.down('sm')]: {
-        position: 'fixed'
-      },
-    },
-
-    scoreRight: {
-      display: "flex",
-      flexDirection: "row-reverse",
-      borderBottom: '1px solid',
-      [theme.breakpoints.down('xs')]: {
-        flexDirection: 'row'
-      },
-    },
-
-    pointsRight: {
-      marginLeft: theme.spacing(2),
-      [theme.breakpoints.down('xs')]: {
-        marginLeft: theme.spacing(0),
-        marginRight: theme.spacing(2),
-      },
+  subtitle: {
+    paddingLeft: theme.spacing(3),
+    paddingRight: theme.spacing(3),
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'center',
+    [theme.breakpoints.down('xs')]: {
+      justifyContent: 'left',
+      paddingLeft: theme.spacing(2),
+      paddingRight: theme.spacing(2),
     }
+  },
 
-  }
-);
+  grid: {
+    border: '1px solid black'
+  },
+
+  iconLeft: {
+    transform: 'rotate(90deg) rotateY(180deg)',
+  },
+
+  iconRight: {
+    transform: 'rotate(270deg)',
+  },
+
+  animationDivLeft: {
+    transition: `transform ${duration}ms ease-in-out`,
+    transformOrigin: 'left center'
+  },
+
+  animationDivRight: {
+    transition: `transform ${duration}ms ease-in-out`,
+    transformOrigin: 'right center'
+  },
+
+  boxLeft: {
+    height: '200px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: "center",
+    [theme.breakpoints.down('xs')]: {
+      height: 'auto',
+    }
+  },
+
+  boxRight: {
+    height: '200px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: "center",
+    [theme.breakpoints.down('xs')]: {
+      height: 'auto',
+    }
+  },
+
+  divider: {
+    marginBottom: theme.spacing(2)
+  },
+
+  vsBox: {
+    display: "flex",
+    justifyContent: "center",
+    height: '100%',
+    width: '100%',
+  },
+
+  vsGrid: {
+    [theme.breakpoints.down('xs')]: {
+      marginTop: theme.spacing(4),
+      marginBottom: theme.spacing(4),
+    },
+  },
+
+  vsNestedBox: {
+    display: "flex",
+    justifyContent: "center",
+    marginBottom: theme.spacing(2),
+    background: `linear-gradient(to left, ${indigo[100]} 50%, ${indigo[100]} 0)`,
+    clipPath: 'polygon(0 0, 100% 0, 50% 90%)',
+    height: '100%',
+    width: '80px',
+    minWidth: '80px',
+    paddingTop: theme.spacing(1),
+    [theme.breakpoints.down('xs')]: {
+      clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)',
+      width: '100%',
+      alignItems: "center",
+      paddingTop: theme.spacing(0),
+    }
+  },
+
+  appBar: {
+    background: 'transparent',
+    top: 'auto',
+    bottom: 0,
+    [theme.breakpoints.down('sm')]: {
+      position: 'fixed'
+    },
+  },
+
+  scoreRight: {
+    display: "flex",
+    flexDirection: "row-reverse",
+    borderBottom: '1px solid',
+    [theme.breakpoints.down('xs')]: {
+      flexDirection: 'row'
+    },
+  },
+
+  pointsRight: {
+    marginLeft: theme.spacing(2),
+    [theme.breakpoints.down('xs')]: {
+      marginLeft: theme.spacing(0),
+      marginRight: theme.spacing(2),
+    },
+  },
+
+  buttonWin: {
+    backgroundColor: 'green'
+  },
+
+  buttonLost: {
+    backgroundColor: 'green'
+  },
+
+
+});
 
 const transitionLeftStyles: any = {
   entering: {
@@ -181,6 +202,8 @@ interface Props extends WithStyles<typeof styles> {
   scoreP1: number;
   scoreP2: number;
   updateScore: (scoreP1: number, scoreP2: number) => void;
+  maxScore: number;
+  newGame: () => void;
 }
 
 
@@ -218,8 +241,18 @@ class Board extends React.Component<Props> {
 
     return (
       <React.Fragment>
+
+        <Box className={classes.subtitle}>
+          <Box>
+            <Typography color='primary'><Box fontWeight='bold'>Vince chi arriva per primo a 5!</Box></Typography>
+          </Box>
+        </Box>
+
+
         <Box className={classes.box}>
+
           <Grid container spacing={3} component='div'>
+
             <Grid item xs={12} sm={5} component='div'>
               <Grid container component='div'>
                 <Grid item xs={6} sm={12} component='div'>
@@ -286,26 +319,84 @@ class Board extends React.Component<Props> {
               </Grid>
             </Grid>
           </Grid>
-
         </Box>
 
         <AppBar position="static" className={classes.appBar}>
           <Toolbar>
-            <ShapePicker disabled={this.state.buttonsDisabled} onClick={(shape: string) => {
-              this.setState({
-                in: true,
-                buttonsDisabled: true,
-                pickedShape: shape,
-                shapeP1: 'fist',
-                shapeP2: 'fist'
-              });
-            }}/>
+            {this.renderShapePicker()}
           </Toolbar>
         </AppBar>
       </React.Fragment>
 
     );
   }
+
+  renderShapePicker() {
+    let disabled = false;
+
+    if (this.isGameOver()) {
+      disabled = true;
+    } else {
+      disabled = this.state.buttonsDisabled;
+    }
+
+    return <ShapePicker disabled={disabled} onClick={(shape: string) => {
+      this.setState({
+        in: true,
+        buttonsDisabled: true,
+        pickedShape: shape,
+        shapeP1: 'fist',
+        shapeP2: 'fist'
+      });
+    }}/>
+  }
+
+  isGameOver() {
+    return this.props.scoreP1 >= this.props.maxScore || this.props.scoreP2 >= this.props.maxScore;
+  }
+
+  //
+  // renderRestartButton() {
+  //   if (this.props.scoreP1 > this.props.scoreP2) {
+  //     return this.renderYouWin()
+  //   }
+  //   return this.renderYouLost()
+  // }
+  // renderYouWin() {
+  //   const classes = this.props.classes;
+  //
+  //   return (
+  //     <Box className={classes.buttonResetBox}>
+  //       <Box>
+  //         <Button variant="contained" color="primary" onClick={() => this.resetGame()}>
+  //           <Typography>Hai vinto! Gioca ancora!</Typography>
+  //         </Button>
+  //       </Box>
+  //     </Box>
+  //   );
+  // }
+  //
+  // renderYouLost() {
+  //   const classes = this.props.classes;
+  //
+  //   return (
+  //     <Box className={classes.buttonResetBox}>
+  //       <Box>
+  //         <Button variant="contained" color="secondary" onClick={() => this.resetGame()}>
+  //           <Typography>Hai perso! Gioca ancora!</Typography>
+  //         </Button>
+  //       </Box>
+  //     </Box>
+  //   );
+  // }
+  //
+  // resetGame() {
+  //   this.setState({
+  //     shapeP1: 'fist',
+  //     shapeP2: 'fist',
+  //   });
+  //   this.props.newGame();
+  // }
 
   doGet() {
     API.put('GamesApi', '/games', {
@@ -321,8 +412,8 @@ class Board extends React.Component<Props> {
         buttonsDisabled: false,
         in: false
       });
-      this.props.updateScore(data.scoreP1, data.scoreP2);
 
+      this.props.updateScore(data.scoreP1, data.scoreP2);
     });
 
 

@@ -9,6 +9,7 @@ import Paper from "@material-ui/core/Paper";
 import withStyles from "@material-ui/core/styles/withStyles";
 import API from "@aws-amplify/api";
 import * as uuid from "uuid";
+import Result from "./Result";
 
 
 const styles = (theme: Theme) => createStyles({
@@ -37,6 +38,8 @@ interface State {
   playerName: string;
   scoreP1: number;
   scoreP2: number;
+  maxScore: number;
+  game: 'new' | 'started' | 'over';
 }
 
 
@@ -50,6 +53,8 @@ class Game extends React.Component<Props> {
       playerName: '',
       scoreP1: 0,
       scoreP2: 0,
+      maxScore: 5,
+      game: 'new',
     };
   }
 
@@ -67,48 +72,91 @@ class Game extends React.Component<Props> {
             </Typography>
           </Toolbar>
         </AppBar>
-        {this.isPlayerNameEmpty() ? this.renderStart() : this.renderBoard()}
+        {this.renderContent()}
       </Paper>
     );
   }
 
-  isPlayerNameEmpty() {
-    return this.state.playerName === '';
+  renderContent() {
+    switch (this.state.game) {
+      case "new":
+        return this.renderStart();
+      case "started":
+        return this.renderBoard();
+      case "over":
+        return this.renderResult();
+      default:
+        return "unknown game state"
+    }
   }
+
 
   renderBoard() {
     return <Board uuid={this.state.uuid}
                   playerName={this.state.playerName}
                   scoreP1={this.state.scoreP1}
                   scoreP2={this.state.scoreP2}
+                  maxScore={this.state.maxScore}
                   updateScore={(scoreP1: number, scoreP2: number) => this.updateScore(scoreP1, scoreP2)}
+                  newGame={() => this.startGame(this.state.playerName)}
     />;
   }
+
+  renderStart() {
+    return <Start onClick={(playerName: string) => this.startGame(playerName)}/>;
+  }
+
+
+  renderResult() {
+    return (
+      <Result scoreP1={this.state.scoreP1}
+              scoreP2={this.state.scoreP2}
+              restartGame={() => this.startGame(this.state.playerName)}
+              endGame={() => this.endGame()}
+      />
+    );
+  }
+
 
   updateScore(scoreP1: number, scoreP2: number) {
     this.setState({
       scoreP1: scoreP1,
       scoreP2: scoreP2
     });
+
+    if (scoreP1 >= this.state.maxScore || scoreP2 >= this.state.maxScore) {
+      this.setState({game: 'over'})
+    }
   }
 
-  renderStart() {
-    return <Start onClick={(playerName: string) => this.handleClick(playerName)}/>;
+  endGame() {
+    this.setState({
+      uuid: '',
+      playerName: '',
+      scoreP1: 0,
+      scoreP2: 0,
+      game: 'new',
+    });
   }
 
-  handleClick(playerName: string) {
+  startGame(playerName: string) {
     const playerUuid: string = uuid.v4();
-
     API.post('GamesApi', '/games', {
       body: {
         uuid: playerUuid,
         playerName: playerName,
-        scoreP1: this.state.scoreP1,
-        scoreP2: this.state.scoreP1,
+        scoreP1: 0,
+        scoreP2: 0,
         date: Date.now()
       }
     }).then(() => {
-      this.setState({playerName: playerName, uuid: playerUuid});
+      this.setState({
+        playerName: playerName,
+        uuid: playerUuid,
+        scoreP1: 0,
+        scoreP2: 0,
+        game: 'started'
+      });
     });
   }
 }

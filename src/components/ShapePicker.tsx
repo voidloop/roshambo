@@ -1,15 +1,14 @@
-import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faHandPaper, faHandRock, faHandScissors} from "@fortawesome/free-regular-svg-icons";
 import * as React from "react";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import {Box, createStyles, Theme} from "@material-ui/core";
+import {Box, createStyles} from "@material-ui/core";
 
 import {IconDefinition} from '@fortawesome/fontawesome-common-types';
 
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles((/*theme: Theme*/) =>
   createStyles({
     button: {
       width: '70px',

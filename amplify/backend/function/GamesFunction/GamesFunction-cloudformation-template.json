@@ -71,7 +71,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "roshambo-dev-20190812191950-deployment",
-					"S3Key": "amplify-builds/GamesFunction-794b7649476268377968-build.zip"
+					"S3Key": "amplify-builds/GamesFunction-50744f394b4c6c314635-build.zip"
 				}
 			}
 		},
